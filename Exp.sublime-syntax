@@ -1,0 +1,39 @@
+%YAML 1.2
+---
+
+file_extensions:
+  - exp
+scope: embedding.exp
+
+contexts:
+  main:
+    - include: home
+
+  home:
+    - match: ''
+      push: scope:text.html.basic
+      with_prototype:
+        - include: exp-main
+
+
+  exp-main:
+    - match: <\?(?i:e=|exp)(?![^?]*\?>)
+      scope: section.embedded.begin.exp
+      captures:
+        0: storage.type.js
+      embed: scope:source.js
+      embed_scope: meta.string.html meta.interpolation.html source.js.embedded.html
+      escape: (\?>)(\s*\n)?
+      escape_captures:
+        1: storage.type.js
+        2: meta.html-newline-after-exp.exp
+    - match: <\?(?i:e=)
+      scope: section.embedded.begin.exp
+      captures:
+        0: storage.type.js
+      embed: scope:source.js
+      embed_scope: meta.string.html meta.interpolation.html source.js.embedded.html
+      escape: (\?>)(\s*\n)?
+      escape_captures:
+        1: storage.type.js
+        2: meta.html-newline-after-exp.exp
